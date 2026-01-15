@@ -17,6 +17,8 @@ import com.caner.controller.IStudentController;
 import com.caner.entities.Student;
 import com.caner.services.IStudentService;
 
+import jakarta.validation.Valid;
+
 
 
 
@@ -29,7 +31,7 @@ public class StudentControllerImpl implements  IStudentController{
 
     @PostMapping(path="/save")    
     @Override
-    public Student saveStudent(@RequestBody Student student) {
+    public Student saveStudent(@RequestBody @Valid Student student) {
         return studentService.saveStudent(student);
     }
 
