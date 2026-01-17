@@ -50,4 +50,7 @@ public class Student {
     @Size(min=6,max=20,message="Password must be greater than equal to 6 and less than equal to 20")
     @Column(name="password")
     private String password;
+
+    @Column(name="deleted")
+    private boolean deleted =false;
 }

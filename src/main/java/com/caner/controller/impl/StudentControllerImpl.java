@@ -6,14 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.caner.controller.IStudentController;
+import com.caner.dto.DtoStudent;
+import com.caner.dto.DtoStudentIU;
 import com.caner.entities.Student;
 import com.caner.services.IStudentService;
 
@@ -31,13 +36,13 @@ public class StudentControllerImpl implements  IStudentController{
 
     @PostMapping(path="/save")    
     @Override
-    public Student saveStudent(@RequestBody @Valid Student student) {
-        return studentService.saveStudent(student);
+    public DtoStudent saveStudent(@RequestBody @Valid DtoStudentIU dtoStudentIU) {
+        return studentService.saveStudent(dtoStudentIU);
     }
 
     @Override
     @GetMapping(path="/list")    
-    public List<Student> getAllStudents() {
+    public List<DtoStudent> getAllStudents() {
         return studentService.getAllStudents();
     }
 
@@ -56,6 +61,24 @@ public class StudentControllerImpl implements  IStudentController{
             sort = Sort.by(sortBy).descending();
         }
     return studentService.getStudenstByPageNo(PageRequest.of(pageNo-1,pageSize,sort));
+    }
+
+    @Override
+    @GetMapping(path="/list/{id}")
+    public DtoStudent getStudentById(@PathVariable(name="id") Integer id) {
+        return studentService.getStudentById(id);
+    }
+
+    @Override
+    @DeleteMapping(path="/delete/{id}")
+    public void deleteStudent(@PathVariable(name="id") Integer id) {
+        studentService.deleteStudent(id);
+    }
+
+    @Override
+    @PutMapping(path="/update/{id}")
+    public DtoStudent updateStudent( @PathVariable(name="id") Integer id,@RequestBody DtoStudentIU dtoStudentIU) {
+        return studentService.updateStudent(id, dtoStudentIU);
     }
 
 
