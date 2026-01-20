@@ -10,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.caner.dto.DtoCourse;
 import com.caner.dto.DtoStudent;
 import com.caner.dto.DtoStudentIU;
+import com.caner.entities.Course;
 import com.caner.entities.Student;
 import com.caner.repository.StudentRepository;
 import com.caner.services.IStudentService;
+
+import jakarta.transaction.Transactional;
 
 
 @Service
@@ -51,14 +55,24 @@ public class StudentServiceImpl implements  IStudentService{
     }
 
     @Override
+    @Transactional
     public DtoStudent getStudentById(Integer id) {
-        DtoStudent dto = new DtoStudent();
-        Optional<Student> optional = studentRepository.findById(id);
-        if(optional.isPresent()){
-            Student dbStudent = optional.get();
-            BeanUtils.copyProperties(dbStudent, dto);
+        Optional<Student> optional= studentRepository.findById(id);
+        if(optional.isEmpty()){
+            return null;
         }
-        return dto;
+        DtoStudent dtoStudent = new DtoStudent();
+        Student dbStudent = optional.get();
+        List<Course> dbCourses = optional.get().getCourses();
+        BeanUtils.copyProperties(dbStudent, dtoStudent);
+        if(dbCourses != null && !dbCourses.isEmpty()){
+        for (Course course : dbCourses) {
+        DtoCourse dtoCourse = new DtoCourse();
+        BeanUtils.copyProperties(course, dtoCourse);
+        dtoStudent.getCourses().add(dtoCourse);
+            }
+        }
+        return dtoStudent;
     }
 
     @Override

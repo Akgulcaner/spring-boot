@@ -1,5 +1,6 @@
 package com.caner.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DtoStudent {
-    private Integer id;
-    private String firstName;
-    private String lastName;
-    private Integer age;
-    private List<DtoCourse> courses = new ArrayList<>();
+public class DtoHome {
+    private Long id;
+    private BigDecimal price;
+    private List<DtoRoom> rooms = new ArrayList<>();
 }
