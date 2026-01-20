@@ -21,5 +21,11 @@ public interface StudentRepository extends JpaRepository<Student, Integer>{
 
     @Query(value="SELECT * FROM student WHERE deleted = false",nativeQuery=true)
     List<Student> findAllActiveStudents();
-    
+    @Query("""
+SELECT s FROM Student s
+LEFT JOIN FETCH s.courses
+WHERE s.id = :id
+""")
+Student findByIdWithCourses(@Param("id") Integer id);
+
 }

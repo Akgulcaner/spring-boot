@@ -57,13 +57,25 @@ public class StudentServiceImpl implements  IStudentService{
     @Override
     @Transactional
     public DtoStudent getStudentById(Integer id) {
-        Optional<Student> optional= studentRepository.findById(id);
-        if(optional.isEmpty()){
-            return null;
-        }
+        // Optional<Student> optional= studentRepository.findById(id);
+        // if(optional.isEmpty()){
+        //     return null;
+        // }
+        // DtoStudent dtoStudent = new DtoStudent();
+        // Student dbStudent = optional.get();
+        // List<Course> dbCourses = optional.get().getCourses();
+        // BeanUtils.copyProperties(dbStudent, dtoStudent);
+        // if(dbCourses != null && !dbCourses.isEmpty()){
+        // for (Course course : dbCourses) {
+        // DtoCourse dtoCourse = new DtoCourse();
+        // BeanUtils.copyProperties(course, dtoCourse);
+        // dtoStudent.getCourses().add(dtoCourse);
+        //     }
+        // }
+        // return dtoStudent;
         DtoStudent dtoStudent = new DtoStudent();
-        Student dbStudent = optional.get();
-        List<Course> dbCourses = optional.get().getCourses();
+        Student dbStudent = studentRepository.findByIdWithCourses(id);
+        List<Course> dbCourses = dbStudent.getCourses();
         BeanUtils.copyProperties(dbStudent, dtoStudent);
         if(dbCourses != null && !dbCourses.isEmpty()){
         for (Course course : dbCourses) {
@@ -72,6 +84,7 @@ public class StudentServiceImpl implements  IStudentService{
         dtoStudent.getCourses().add(dtoCourse);
             }
         }
+        BeanUtils.copyProperties(dbStudent, dtoStudent);
         return dtoStudent;
     }
 
