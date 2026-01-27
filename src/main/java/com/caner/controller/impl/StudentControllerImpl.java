@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,12 +70,14 @@ public class StudentControllerImpl implements  IStudentController{
         return studentService.getStudentById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     @DeleteMapping(path="/delete/{id}")
     public void deleteStudent(@PathVariable(name="id") Integer id) {
         studentService.deleteStudent(id);
     }
 
+    @PreAuthorize("hasRole('MODERATOR')")
     @Override
     @PutMapping(path="/update/{id}")
     public DtoStudent updateStudent( @PathVariable(name="id") Integer id,@RequestBody DtoStudentIU dtoStudentIU) {
