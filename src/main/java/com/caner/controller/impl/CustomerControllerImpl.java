@@ -13,12 +13,13 @@ import com.caner.services.ICustomerService;
 @RestController
 @RequestMapping("/rest/api/customer")
 public class CustomerControllerImpl implements ICustomerController{
+
     @Autowired
     private ICustomerService customerService;
+
     @Override
     @GetMapping(path="/list/{id}")
     public DtoCustomer findCustomerById(@PathVariable(name="id") Long id) {
         return customerService.findCustomerById(id);
     }
-    
 }

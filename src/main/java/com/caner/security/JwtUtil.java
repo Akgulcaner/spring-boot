@@ -42,6 +42,7 @@ public class JwtUtil {
                 .toList();
 
         claims.put("roles", authorities);
+        claims.put("username",userDetails.getUsername());
 
         return Jwts.builder()
                 .setClaims(claims)
